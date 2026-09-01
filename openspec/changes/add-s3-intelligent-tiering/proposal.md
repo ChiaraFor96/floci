@@ -24,3 +24,8 @@ None.
 - Affects S3 REST XML routing, models, service logic, and storage-backed bucket state.
 - May require native-image reflection registration for new controller response models.
 - Requires focused service and AWS SDK integration tests plus S3 service documentation updates.
+
+## Upstream Readiness
+
+- No matching upstream issue or pull request, open or closed, was found for S3 Intelligent-Tiering configuration CRUD.
+- The existing S3 metrics-configuration implementation provides the intended native routing and persistence pattern.

@@ -4,7 +4,7 @@ Floci implements Lake Formation resource registration and permission lifecycles,
 
 ## What Changes
 
-- Add AWS-compatible routing and handling for Lake Formation `UpdateResource`.
+- Add AWS REST JSON-compatible routing and handling for Lake Formation `UpdateResource`.
 - Update the role ARN of an existing registered resource without replacing its identity or unrelated state.
 - Return AWS-compatible errors for missing resources and invalid requests.
 - Add automated SDK-level coverage for successful updates, isolation, and failure cases.
@@ -22,5 +22,10 @@ None.
 ## Impact
 
 - Affects the Lake Formation controller, service, request models, and persisted resource state.
-- Extends the existing Lake Formation AWS JSON protocol surface without adding a custom endpoint.
+- Extends the existing Lake Formation REST JSON protocol surface without adding a custom endpoint.
 - Requires focused service tests and AWS SDK integration coverage.
+
+## Upstream Readiness
+
+- No open upstream issue or pull request currently covers `UpdateResource`.
+- Closed upstream PR #1622 included an `UpdateResource` attempt but used AWS JSON 1.1 routing. The replacement contribution must use the current REST JSON Lake Formation controller and SDK-level verification.

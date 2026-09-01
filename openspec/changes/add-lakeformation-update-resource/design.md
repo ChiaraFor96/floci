@@ -1,12 +1,12 @@
 ## Context
 
-Lake Formation requests are parsed by `LakeFormationController`, validated and executed by `LakeFormationService`, and persisted through `LakeFormationStorage`. Registered resources are keyed by Region and resource ARN. Adjacent register, describe, and deregister operations already define the protocol, error, and storage conventions that this change must preserve.
+Lake Formation requests are parsed by the REST JSON `LakeFormationController`, validated and executed by `LakeFormationService`, and persisted through `LakeFormationStorage`. Registered resources are keyed by Region and resource ARN. Adjacent register, describe, and deregister operations already define the protocol, error, and storage conventions that this change must preserve. Closed upstream PR #1622 attempted this operation through AWS JSON 1.1 routing; the current contribution must retain the existing REST JSON controller path.
 
 ## Goals / Non-Goals
 
 **Goals:**
 
-- Expose `UpdateResource` through the same AWS JSON endpoint shape as existing Lake Formation operations.
+- Expose `UpdateResource` through the AWS REST JSON endpoint shape used by existing Lake Formation operations.
 - Update an existing resource atomically in the configured storage backend.
 - Preserve account and Region isolation and AWS-compatible errors.
 - Prove compatibility with an AWS SDK client.
@@ -19,7 +19,7 @@ Lake Formation requests are parsed by `LakeFormationController`, validated and e
 
 ## Decisions
 
-1. Add a thin `POST /UpdateResource` handler to `LakeFormationController`. It will parse an `UpdateResourceRequest`, resolve the Region from request headers, delegate to the service, and use the existing response and exception mapping. This follows the current controller pattern and avoids protocol-specific logic in the service.
+1. Add a thin REST JSON `POST /UpdateResource` handler to `LakeFormationController`. It will parse an `UpdateResourceRequest`, resolve the Region from request headers, delegate to the service, and use the existing response and exception mapping. It must not require an `X-Amz-Target` header. This follows the current controller pattern and avoids protocol-specific logic in the service.
 2. Add service and storage operations rather than implementing read-modify-write in the controller. `LakeFormationService` will validate required values and resource existence; `LakeFormationStorage` will replace supported mutable fields while retaining the same key and unrelated `ResourceInfo` state.
 3. Use the existing `StorageFactory`-backed Lake Formation resource map. No parallel cache or direct storage implementation will be introduced, so memory, persistent, hybrid, and WAL modes retain consistent behavior.
 4. Model the AWS request fields explicitly. The first implementation will update `RoleArn` and any already-supported optional registration flags supplied by the request, while omitted optional values preserve their current values.
@@ -29,7 +29,7 @@ Lake Formation requests are parsed by `LakeFormationController`, validated and e
 
 - [AWS distinguishes omitted optional fields from explicit false values] -> Use nullable request fields and merge only values present in the request.
 - [Concurrent updates could lose unrelated state] -> Put the merge operation behind the storage abstraction and follow its existing synchronization strategy.
-- [Controller routing could accept a non-AWS request shape] -> Validate through an AWS SDK integration test, not only direct HTTP calls.
+- [Controller routing could accept a non-AWS request shape] -> Validate the REST JSON path through an AWS SDK integration test, not only direct HTTP calls.
 
 ## Migration Plan
 

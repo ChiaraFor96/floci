@@ -1,7 +1,11 @@
 ## ADDED Requirements
 
 ### Requirement: Update a registered Lake Formation resource
-Floci SHALL implement the AWS Lake Formation `UpdateResource` operation for an existing registered resource.
+Floci SHALL implement the AWS Lake Formation REST JSON `UpdateResource` operation for an existing registered resource.
+
+#### Scenario: AWS REST JSON request routing
+- **WHEN** an AWS SDK client sends `POST /UpdateResource` without an `X-Amz-Target` header
+- **THEN** Floci routes the request to the Lake Formation update operation
 
 #### Scenario: Update the registration role
 - **WHEN** an AWS SDK client updates a registered resource with a valid resource ARN and role ARN

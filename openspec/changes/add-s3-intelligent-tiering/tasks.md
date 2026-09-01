@@ -1,7 +1,8 @@
 ## 1. Confirm AWS Contract
 
 - [ ] 1.1 Verify Intelligent-Tiering XML shapes, required fields, status codes, and exception names against the AWS SDK model
-- [ ] 1.2 Add failing parser tests for valid configurations, optional filters, multiple tierings, and malformed XML
+- [ ] 1.2 Confirm no new upstream Intelligent-Tiering issue or pull request conflicts before opening the implementation PR
+- [ ] 1.3 Add failing parser tests for valid configurations, optional filters, multiple tierings, and malformed XML
 
 ## 2. Implement Configuration Storage
 

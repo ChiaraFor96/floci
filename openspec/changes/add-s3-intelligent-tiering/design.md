@@ -2,6 +2,8 @@
 
 S3 bucket subresources are routed by query parameter in `S3Controller`, implemented in `S3Service`, and stored as part of the `Bucket` model. Metrics configuration CRUD already provides the closest protocol and persistence pattern. Intelligent-Tiering uses the same REST XML style but has its own configuration shape and AWS error names.
 
+No matching upstream issue or pull request, open or closed, was found during contribution readiness review. The implementation can therefore use the metrics configuration pattern without coordinating a conflicting change.
+
 ## Goals / Non-Goals
 
 **Goals:**
